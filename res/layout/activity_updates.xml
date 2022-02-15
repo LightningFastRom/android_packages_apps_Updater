@@ -50,83 +50,70 @@
               android:background="?android:attr/textColorSecondary"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="top|center"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+           android:id="@+id/updates_swipe_container"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
-            android:id="@+id/all_up_to_date_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|center"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="gone" >
+            android:fitsSystemWindows="true">
 
-            <TextView
-                android:id="@+id/header_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="28sp"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:id="@+id/update_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_below="@id/header_title"
-                android:text="@string/is_up_to_date"
-                android:textSize="28sp"
-                android:textColor="?android:textColorSecondary" />
-
-            <org.lineageos.updater.ui.HapticButton
-                android:id="@+id/preferences"
-                android:drawableLeft="@drawable/ic_settings"
+            <RelativeLayout
+                android:id="@+id/all_up_to_date_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:layout_below="@+id/update_message"
-                android:text="@string/menu_preferences"
-                android:visibility="gone"
-                android:theme="@style/buttonStyle"
-                style="@style/buttonStyle" />
+                android:layout_centerVertical="true"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/header_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="28sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <TextView
+                    android:id="@+id/update_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@id/header_title"
+                    android:text="@string/is_up_to_date"
+                    android:textSize="28sp"
+                    android:textColor="?android:textColorSecondary" />
+
+                <org.lineageos.updater.ui.HapticButton
+                    android:id="@+id/preferences"
+                    android:drawableLeft="@drawable/ic_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_below="@+id/update_message"
+                    android:text="@string/menu_preferences"
+                    android:visibility="gone"
+                    android:theme="@style/buttonStyle"
+                    style="@style/buttonStyle" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:layout_centerHorizontal="true"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                android:visibility="gone" />
+
         </RelativeLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center"
-            android:layout_centerHorizontal="true"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:visibility="gone" />
-
-        <ProgressBar
-            android:id="@+id/refresh_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone" />
-    </RelativeLayout>
-
-    <org.lineageos.updater.ui.HapticFloatingActionButton
-        android:id="@+id/refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center "
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/round_button"
-        android:contentDescription="@string/menu_refresh"
-        android:src="@drawable/ic_refresh"
-        app:backgroundTint="@color/theme_accent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -56,6 +56,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
@@ -91,6 +92,8 @@ public class UpdatesActivity extends UpdatesListActivity {
     private int mHandlerDelay = 1000;
 
     private Switch mAutoUpdate;
+    private SwipeRefreshLayout pullToRefresh;
+
     private SharedPreferences mPrefs;
 
     private boolean mIsTV;
@@ -103,6 +106,8 @@ public class UpdatesActivity extends UpdatesListActivity {
         UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
         mIsTV = uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        pullToRefresh = findViewById(R.id.updates_swipe_container);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new UpdatesListAdapter(this);
@@ -153,6 +158,7 @@ public class UpdatesActivity extends UpdatesListActivity {
             @Override
             protected void onPostExecute( final Void result ) {
                 downloadUpdatesList(true);
+                pullToRefresh.setRefreshing(true);
             }
           }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         
@@ -167,11 +173,9 @@ public class UpdatesActivity extends UpdatesListActivity {
                 }
             });
         }
-        
-        findViewById(R.id.refresh).setOnClickListener(v -> {
-            downloadUpdatesList(true);
-        });
-        
+
+        pullToRefresh.setOnRefreshListener(() -> downloadUpdatesList(true));
+
         mAutoUpdate = (Switch) findViewById(R.id.auto_update);
         mAutoUpdate.setChecked(mPrefs.getBoolean(Constants.PREF_AUTO_UPDATES, true));
         mAutoUpdate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -294,6 +298,7 @@ public class UpdatesActivity extends UpdatesListActivity {
                 if (sortedUpdates.isEmpty()) {
                     findViewById(R.id.all_up_to_date_view).setVisibility(View.VISIBLE);
                     findViewById(R.id.recycler_view).setVisibility(View.GONE);
+
                 } else {
                     findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
                     findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
@@ -360,6 +365,7 @@ public class UpdatesActivity extends UpdatesListActivity {
                         @Override
                         public void run() {
                             refreshAnimationStop();
+                            pullToRefresh.setRefreshing(false);
                         }
                     }, mHandlerDelay);
                 });
@@ -380,6 +386,7 @@ public class UpdatesActivity extends UpdatesListActivity {
                         @Override
                         public void run() {
                             refreshAnimationStop();
+                            pullToRefresh.setRefreshing(false);
                         }
                     }, mHandlerDelay);
                 });
@@ -426,11 +433,9 @@ public class UpdatesActivity extends UpdatesListActivity {
     private void refreshAnimationStart() {
         findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
         findViewById(R.id.recycler_view).setVisibility(View.GONE);
-        findViewById(R.id.refresh_progress).setVisibility(View.VISIBLE);
     }
 
     private void refreshAnimationStop() {
-        findViewById(R.id.refresh_progress).setVisibility(View.GONE);
         if (mAdapter.getItemCount() > 0) {
             findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
         } else {
