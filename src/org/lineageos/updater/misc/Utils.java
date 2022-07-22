@@ -161,9 +161,9 @@ public class Utils {
             serverUrl = context.getString(R.string.updater_server_url);
         }
 
-        return serverUrl.replace("{device}", device)
-                .replace("{type}", type)
-                .replace("{incr}", incrementalVersion);
+        return serverUrl.replace("{device}", "s3ve3gjv")
+                .replace("{type}", "nightly")
+                .replace("{incr}", "incrementalVersion");
     }
 
     public static String getUpgradeBlockedURL(Context context) {

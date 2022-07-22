@@ -37,12 +37,41 @@
     </style>
 
     <style name="AccentMaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
-        <item name="buttonBarPositiveButtonStyle">@style/AccentButton</item>
-        <item name="buttonBarNegativeButtonStyle">@style/AccentButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.UpdateButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.UpdateButton</item>
     </style>
 
-    <style name="AccentButton">
-        <item name="android:textColorPrimary">@color/theme_accent</item>
-        <item name="android:textColor">@color/theme_accent</item>
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="colorAccent">@color/theme_accent</item>
+        <item name="android:textColor">@color/inverted</item>
+        <item name="android:background">@drawable/sheet_background</item>
     </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
+        <item name="colorAccent">@color/theme_accent</item>
+        <item name="android:textColor">@color/inverted</item>
+        <item name="android:backgroundTint">@color/theme_primary</item>
+        <item name="android:listPreferredItemPaddingStart">24dp</item>
+        <item name="android:listPreferredItemPaddingLeft">24dp</item>
+        <item name="android:listPreferredItemPaddingEnd">24dp</item>
+        <item name="android:listPreferredItemPaddingRight">24dp</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="colorControlNormal">?android:attr/colorControlNormal</item>
+        <item name="android:windowLightStatusBar">@bool/theme_is_light</item>
+        <item name="android:windowLightNavigationBar">@bool/theme_is_light</item>
+    </style>
+
+    <style name="spinnerStyle" parent="BottomSheetDialogTheme">
+        <item name="android:textColor">@color/inverted</item>
+        <item name="android:backgroundTint">@color/inverted</item>
+    </style>
+
 </resources>
