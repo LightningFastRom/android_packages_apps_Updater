@@ -52,7 +52,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
@@ -130,54 +129,15 @@ public class UpdatesActivity extends UpdatesListActivity {
         TextView headerTitle = (TextView) findViewById(R.id.header_title);
         headerTitle.setText(getString(R.string.header_title_text,
                 BuildInfoUtils.getBuildVersion()));
+        
+        mRefreshAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        mRefreshAnimation.setInterpolator(new LinearInterpolator());
+        mRefreshAnimation.setDuration(1000);
+        refreshAnimationStart();
+        downloadUpdatesList(true);
 
-        updateLastCheckedString();
-
-        TextView headerBuildVersion = (TextView) findViewById(R.id.header_build_version);
-        headerBuildVersion.setText(
-                getString(R.string.header_android_version, Build.VERSION.RELEASE));
-
-        TextView headerBuildDate = (TextView) findViewById(R.id.header_build_date);
-        headerBuildDate.setText(StringGenerator.getDateLocalizedUTC(this,
-                DateFormat.LONG, BuildInfoUtils.getBuildDateTimestamp()));
-
-        if (!mIsTV) {
-            // Switch between header title and appbar title minimizing overlaps
-            final CollapsingToolbarLayout collapsingToolbar =
-                    (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-            final AppBarLayout appBar = (AppBarLayout) findViewById(R.id.app_bar);
-            appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                boolean mIsShown = false;
-
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    int scrollRange = appBarLayout.getTotalScrollRange();
-                    if (!mIsShown && scrollRange + verticalOffset < 10) {
-                        collapsingToolbar.setTitle(getString(R.string.display_name));
-                        mIsShown = true;
-                    } else if (mIsShown && scrollRange + verticalOffset > 100) {
-                        collapsingToolbar.setTitle(null);
-                        mIsShown = false;
-                    }
-                }
-            });
-
-            mRefreshAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f);
-            mRefreshAnimation.setInterpolator(new LinearInterpolator());
-            mRefreshAnimation.setDuration(1000);
-
-            if (!Utils.hasTouchscreen(this)) {
-                // This can't be collapsed without a touchscreen
-                appBar.setExpanded(false);
-            }
-        } else {
-            findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    downloadUpdatesList(true);
-                }
-            });
+        if (mIsTV){
             findViewById(R.id.preferences).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -220,10 +180,6 @@ public class UpdatesActivity extends UpdatesListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_refresh: {
-                downloadUpdatesList(true);
-                return true;
-            }
             case R.id.menu_preferences: {
                 showPreferencesDialog();
                 return true;
@@ -277,19 +233,13 @@ public class UpdatesActivity extends UpdatesListActivity {
         }
         controller.setUpdatesAvailableOnline(updatesOnline, true);
 
-        if (manualRefresh) {
-            showSnackbar(
-                    newUpdates ? R.string.snack_updates_found : R.string.snack_no_updates_found,
-                    Snackbar.LENGTH_SHORT);
-        }
-
         List<String> updateIds = new ArrayList<>();
         List<UpdateInfo> sortedUpdates = controller.getUpdates();
         if (sortedUpdates.isEmpty()) {
-            findViewById(R.id.no_new_updates_view).setVisibility(View.VISIBLE);
+            findViewById(R.id.all_up_to_date_view).setVisibility(View.VISIBLE);
             findViewById(R.id.recycler_view).setVisibility(View.GONE);
         } else {
-            findViewById(R.id.no_new_updates_view).setVisibility(View.GONE);
+            findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
             findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
             sortedUpdates.sort((u1, u2) -> Long.compare(u2.getTimestamp(), u1.getTimestamp()));
             for (UpdateInfo update : sortedUpdates) {
@@ -320,7 +270,6 @@ public class UpdatesActivity extends UpdatesListActivity {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             long millis = System.currentTimeMillis();
             preferences.edit().putLong(Constants.PREF_LAST_UPDATE_CHECK, millis).apply();
-            updateLastCheckedString();
             if (json.exists() && Utils.isUpdateCheckEnabled(this) &&
                     Utils.checkForNewUpdates(json, jsonNew)) {
                 UpdatesCheckReceiver.updateRepeatingUpdatesCheck(this);
@@ -384,17 +333,6 @@ public class UpdatesActivity extends UpdatesListActivity {
         downloadClient.start();
     }
 
-    private void updateLastCheckedString() {
-        final SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(this);
-        long lastCheck = preferences.getLong(Constants.PREF_LAST_UPDATE_CHECK, -1) / 1000;
-        String lastCheckString = getString(R.string.header_last_updates_check,
-                StringGenerator.getDateLocalized(this, DateFormat.LONG, lastCheck),
-                StringGenerator.getTimeLocalized(this, lastCheck));
-        TextView headerLastCheck = (TextView) findViewById(R.id.header_last_check);
-        headerLastCheck.setText(lastCheckString);
-    }
-
     private void handleDownloadStatusChange(String downloadId) {
         UpdateInfo update = mUpdaterService.getUpdaterController().getUpdate(downloadId);
         switch (update.getStatus()) {
@@ -416,35 +354,17 @@ public class UpdatesActivity extends UpdatesListActivity {
     }
 
     private void refreshAnimationStart() {
-        if (!mIsTV) {
-            if (mRefreshIconView == null) {
-                mRefreshIconView = findViewById(R.id.menu_refresh);
-            }
-            if (mRefreshIconView != null) {
-                mRefreshAnimation.setRepeatCount(Animation.INFINITE);
-                mRefreshIconView.startAnimation(mRefreshAnimation);
-                mRefreshIconView.setEnabled(false);
-            }
-        } else {
-            findViewById(R.id.recycler_view).setVisibility(View.GONE);
-            findViewById(R.id.no_new_updates_view).setVisibility(View.GONE);
-            findViewById(R.id.refresh_progress).setVisibility(View.VISIBLE);
-        }
+        findViewById(R.id.recycler_view).setVisibility(View.GONE);
+        findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
+        findViewById(R.id.refresh_progress).setVisibility(View.VISIBLE);
     }
 
     private void refreshAnimationStop() {
-        if (!mIsTV) {
-            if (mRefreshIconView != null) {
-                mRefreshAnimation.setRepeatCount(0);
-                mRefreshIconView.setEnabled(true);
-            }
+        findViewById(R.id.refresh_progress).setVisibility(View.GONE);
+        if (mAdapter.getItemCount() > 0) {
+            findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.refresh_progress).setVisibility(View.GONE);
-            if (mAdapter.getItemCount() > 0) {
-                findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
-            } else {
-                findViewById(R.id.no_new_updates_view).setVisibility(View.VISIBLE);
-            }
+            findViewById(R.id.all_up_to_date_view).setVisibility(View.VISIBLE);
         }
     }
 
