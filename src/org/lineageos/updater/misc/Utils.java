@@ -380,18 +380,14 @@ public class Utils {
         return sm.isEncrypted(file);
     }
 
-    public static int getUpdateCheckSetting(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getInt(Constants.PREF_AUTO_UPDATES_CHECK_INTERVAL,
-                Constants.AUTO_UPDATES_CHECK_INTERVAL_WEEKLY);
-    }
-
     public static boolean isUpdateCheckEnabled(Context context) {
-        return getUpdateCheckSetting(context) != Constants.AUTO_UPDATES_CHECK_INTERVAL_NEVER;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(Constants.PREF_AUTO_UPDATES, true);
     }
 
     public static long getUpdateCheckInterval(Context context) {
-        switch (Utils.getUpdateCheckSetting(context)) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        switch (preferences.getInt(Constants.PREF_AUTO_UPDATES_CHECK_INTERVAL, Constants.AUTO_UPDATES_CHECK_INTERVAL_WEEKLY)) {
             case Constants.AUTO_UPDATES_CHECK_INTERVAL_DAILY:
                 return AlarmManager.INTERVAL_DAY;
             case Constants.AUTO_UPDATES_CHECK_INTERVAL_WEEKLY:

@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
-    
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -16,36 +15,52 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/display_name"
-                android:textColor="@android:color/white"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="20sp"
                 android:layout_marginRight="?android:attr/actionBarSize"
                 android:gravity="center"/>
         </androidx.appcompat.widget.Toolbar>
+        
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingEnd="24dp"
+            android:paddingStart="24dp"
+            android:paddingTop="16dp"
+            android:background="@drawable/au_background"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            layout_below="@+id/app_bar">
+            
+            <Switch
+                android:id="@+id/auto_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:checked="true"
+                android:text="@string/auto_updates"
+                android:textSize="16sp" />
+        </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="match_parent">
         
-        <Button
-            android:id="@+id/preferences"
-            android:drawableLeft="@drawable/ic_menu_preferences"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="preferences"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
-            
         <RelativeLayout
             android:id="@+id/all_up_to_date_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone" >
             
             <TextView
                 android:id="@+id/header_title"
@@ -56,6 +71,7 @@
                 android:textColor="?android:attr/textColorSecondary" />
                 
             <TextView
+                android:id="@+id/update_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -63,23 +79,50 @@
                 android:text="@string/is_up_to_date"
                 android:textSize="28sp"
                 android:textColor="?android:textColorSecondary" />
+                
+            <Button
+                android:id="@+id/preferences"
+                android:drawableLeft="@drawable/ic_menu_preferences"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_below="@+id/update_message"
+                android:text="@string/menu_preferences"
+                android:visibility="gone"
+                style="@style/Widget.AppCompat.Button.Colored"/>
         </RelativeLayout>
-        
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:paddingBottom="5dp"
             android:scrollbars="vertical"
+            android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        
+
         <ProgressBar
             android:id="@+id/refresh_progress"
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center "
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round_button"
+        android:contentDescription="@string/menu_refresh"
+        android:src="@drawable/ic_menu_refresh"
+        app:backgroundTint="@color/theme_accent" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

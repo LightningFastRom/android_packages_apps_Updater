@@ -28,6 +28,7 @@ import android.icu.text.DateFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,9 +39,11 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -79,7 +82,8 @@ public class UpdatesActivity extends UpdatesListActivity {
     private UpdatesListAdapter mAdapter;
 
     private View mRefreshIconView;
-    private RotateAnimation mRefreshAnimation;
+    private Switch mAutoUpdate;
+    private SharedPreferences mPrefs;
 
     private boolean mIsTV;
 
@@ -90,6 +94,7 @@ public class UpdatesActivity extends UpdatesListActivity {
 
         UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
         mIsTV = uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new UpdatesListAdapter(this);
@@ -130,21 +135,51 @@ public class UpdatesActivity extends UpdatesListActivity {
         headerTitle.setText(getString(R.string.header_title_text,
                 BuildInfoUtils.getBuildVersion()));
         
-        mRefreshAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        mRefreshAnimation.setInterpolator(new LinearInterpolator());
-        mRefreshAnimation.setDuration(1000);
-        refreshAnimationStart();
-        downloadUpdatesList(true);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground( final Void ... params ) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute( final Void result ) {
+                downloadUpdatesList(true);
+            }
+          }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        
 
         if (mIsTV){
-            findViewById(R.id.preferences).setOnClickListener(new View.OnClickListener() {
+            Button prefButton = (Button) findViewById(R.id.preferences);
+            prefButton.setVisibility(View.VISIBLE);
+            prefButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showPreferencesDialog();
                 }
             });
         }
+        
+        findViewById(R.id.refresh).setOnClickListener(v -> {
+            downloadUpdatesList(true);
+        });
+        
+        mAutoUpdate = (Switch) findViewById(R.id.auto_update);
+        mAutoUpdate.setChecked(mPrefs.getBoolean(Constants.PREF_AUTO_UPDATES, true));
+        mAutoUpdate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mPrefs.edit()
+                    .putBoolean(Constants.PREF_AUTO_UPDATES,
+                            isChecked)
+                    .apply();
+            }
+        });
+    }
+    
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        finish();
     }
 
     @Override
@@ -207,7 +242,7 @@ public class UpdatesActivity extends UpdatesListActivity {
                 IBinder service) {
             UpdaterService.LocalBinder binder = (UpdaterService.LocalBinder) service;
             mUpdaterService = binder.getService();
-            mAdapter.setUpdaterController(mUpdaterService.getUpdaterController());
+//            mAdapter.setUpdaterController(mUpdaterService.getUpdaterController());
             getUpdatesList();
         }
 
@@ -354,8 +389,8 @@ public class UpdatesActivity extends UpdatesListActivity {
     }
 
     private void refreshAnimationStart() {
-        findViewById(R.id.recycler_view).setVisibility(View.GONE);
         findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
+        findViewById(R.id.recycler_view).setVisibility(View.GONE);
         findViewById(R.id.refresh_progress).setVisibility(View.VISIBLE);
     }
 
@@ -380,17 +415,17 @@ public class UpdatesActivity extends UpdatesListActivity {
             abPerfMode.setVisibility(View.GONE);
         }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        autoCheckInterval.setSelection(Utils.getUpdateCheckSetting(this));
-        autoDelete.setChecked(prefs.getBoolean(Constants.PREF_AUTO_DELETE_UPDATES, false));
-        dataWarning.setChecked(prefs.getBoolean(Constants.PREF_MOBILE_DATA_WARNING, true));
-        abPerfMode.setChecked(prefs.getBoolean(Constants.PREF_AB_PERF_MODE, false));
+        autoCheckInterval.setEnabled(mPrefs.getBoolean(Constants.PREF_AUTO_UPDATES, true));
+        autoCheckInterval.setSelection(mPrefs.getInt(Constants.PREF_AUTO_UPDATES_CHECK_INTERVAL, Constants.AUTO_UPDATES_CHECK_INTERVAL_WEEKLY));
+        autoDelete.setChecked(mPrefs.getBoolean(Constants.PREF_AUTO_DELETE_UPDATES, false));
+        dataWarning.setChecked(mPrefs.getBoolean(Constants.PREF_MOBILE_DATA_WARNING, true));
+        abPerfMode.setChecked(mPrefs.getBoolean(Constants.PREF_AB_PERF_MODE, false));
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.menu_preferences)
                 .setView(view)
                 .setOnDismissListener(dialogInterface -> {
-                    prefs.edit()
+                    mPrefs.edit()
                             .putInt(Constants.PREF_AUTO_UPDATES_CHECK_INTERVAL,
                                     autoCheckInterval.getSelectedItemPosition())
                             .putBoolean(Constants.PREF_AUTO_DELETE_UPDATES,

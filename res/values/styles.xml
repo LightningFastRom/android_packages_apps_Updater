@@ -31,4 +31,18 @@
         <item name="android:dropDownVerticalOffset">8dp</item>
         <item name="android:dropDownHorizontalOffset">-16dp</item>
     </style>
+
+    <style name="AppTheme.UpdateButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:backgroundTint">@color/theme_accent</item>
+    </style>
+
+    <style name="AccentMaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="buttonBarPositiveButtonStyle">@style/AccentButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AccentButton</item>
+    </style>
+
+    <style name="AccentButton">
+        <item name="android:textColorPrimary">@color/theme_accent</item>
+        <item name="android:textColor">@color/theme_accent</item>
+    </style>
 </resources>
