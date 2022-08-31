@@ -80,7 +80,7 @@
                 android:textSize="28sp"
                 android:textColor="?android:textColorSecondary" />
                 
-            <Button
+            <org.lineageos.updater.ui.HapticButton
                 android:id="@+id/preferences"
                 android:drawableLeft="@drawable/ic_menu_preferences"
                 android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <org.lineageos.updater.ui.HapticFloatingActionButton 
         android:id="@+id/refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -124,5 +124,4 @@
         android:contentDescription="@string/menu_refresh"
         android:src="@drawable/ic_menu_refresh"
         app:backgroundTint="@color/theme_accent" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
