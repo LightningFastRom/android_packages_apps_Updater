@@ -6,7 +6,7 @@
     android:paddingStart="16dp"
     android:paddingTop="16dp">
 
-    <CheckBox
+    <org.lineageos.updater.ui.HapticCheckBox
         android:id="@+id/checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
