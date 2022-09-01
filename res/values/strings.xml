@@ -20,11 +20,11 @@
 
     <!-- Directory where the update files will be downloaded and stored.
          WARNING: The application can and will delete any unknown file. -->
-    <string name="download_path" translatable="false">/data/lineageos_updates/</string>
+    <string name="download_path" translatable="false">/data/lightningfastrom_updates/</string>
 
     <!-- Directory where the downloads will be exported to.
          The path is relative to the root of the external storage.-->
-    <string name="export_path" translatable="false">LineageOS updates/</string>
+    <string name="export_path" translatable="false">LightningFastRom updates/</string>
 
     <!--
         Optional placeholders replaced at runtime:
@@ -108,7 +108,6 @@
     <string name="action_info">Info</string>
     <string name="action_delete">Delete</string>
     <string name="action_cancel">Cancel</string>
-    <string name="action_update">Update</string>
 
     <string name="confirm_delete_dialog_title">Delete file</string>
     <string name="confirm_delete_dialog_message">Delete the selected update file?</string>
