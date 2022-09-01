@@ -30,6 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -78,12 +79,15 @@ import java.util.UUID;
 public class UpdatesActivity extends UpdatesListActivity {
 
     private static final String TAG = "UpdatesActivity";
+
     private UpdaterService mUpdaterService;
     private BroadcastReceiver mBroadcastReceiver;
 
     private UpdatesListAdapter mAdapter;
 
-    private View mRefreshIconView;
+    private Handler mHandler = null;
+    private int mHandlerDelay = 1000;
+
     private Switch mAutoUpdate;
     private SharedPreferences mPrefs;
 
@@ -176,6 +180,8 @@ public class UpdatesActivity extends UpdatesListActivity {
                     .apply();
             }
         });
+        
+        mHandler = new Handler();
     }
     
     @Override
@@ -272,19 +278,32 @@ public class UpdatesActivity extends UpdatesListActivity {
 
         List<String> updateIds = new ArrayList<>();
         List<UpdateInfo> sortedUpdates = controller.getUpdates();
-        if (sortedUpdates.isEmpty()) {
-            findViewById(R.id.all_up_to_date_view).setVisibility(View.VISIBLE);
-            findViewById(R.id.recycler_view).setVisibility(View.GONE);
-        } else {
-            findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
-            findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
-            sortedUpdates.sort((u1, u2) -> Long.compare(u2.getTimestamp(), u1.getTimestamp()));
-            for (UpdateInfo update : sortedUpdates) {
-                updateIds.add(update.getDownloadId());
-            }
-            mAdapter.setData(updateIds);
-            mAdapter.notifyDataSetChanged();
+
+        if (manualRefresh) {
+            TextView updateMessage = (TextView) findViewById(R.id.update_message);
+            updateMessage.setText(newUpdates ? R.string.snack_updates_found : R.string.is_up_to_date);
         }
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshAnimationStop();
+
+                if (sortedUpdates.isEmpty()) {
+                    findViewById(R.id.all_up_to_date_view).setVisibility(View.VISIBLE);
+                    findViewById(R.id.recycler_view).setVisibility(View.GONE);
+                } else {
+                    findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
+                    findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
+                    sortedUpdates.sort((u1, u2) -> Long.compare(u2.getTimestamp(), u1.getTimestamp()));
+                    for (UpdateInfo update : sortedUpdates) {
+                        updateIds.add(update.getDownloadId());
+                    }
+                    mAdapter.setData(updateIds);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        }, mHandlerDelay);
     }
 
     private void getUpdatesList() {
@@ -334,7 +353,13 @@ public class UpdatesActivity extends UpdatesListActivity {
                     if (!cancelled) {
                         showSnackbar(R.string.snack_updates_check_failed, Snackbar.LENGTH_LONG);
                     }
-                    refreshAnimationStop();
+
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshAnimationStop();
+                        }
+                    }, mHandlerDelay);
                 });
             }
 
@@ -348,7 +373,13 @@ public class UpdatesActivity extends UpdatesListActivity {
                 runOnUiThread(() -> {
                     Log.d(TAG, "List downloaded");
                     processNewJson(jsonFile, jsonFileTmp, manualRefresh);
-                    refreshAnimationStop();
+
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshAnimationStop();
+                        }
+                    }, mHandlerDelay);
                 });
             }
         };
