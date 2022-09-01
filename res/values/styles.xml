@@ -71,7 +71,12 @@
 
     <style name="spinnerStyle" parent="BottomSheetDialogTheme">
         <item name="android:textColor">@color/inverted</item>
-        <item name="android:backgroundTint">@color/inverted</item>
+        <item name="backgroundTint">@color/inverted</item>
+        <item name="android:showDividers">none</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:popupBackground">@drawable/sheet_background</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:dropDownSelector">@drawable/sheet_background</item>
     </style>
 
 </resources>

@@ -39,7 +39,9 @@
             android:layout_height="wrap_content"
             android:entries="@array/menu_auto_updates_check_interval_entries"
             android:theme="@style/spinnerStyle"
-            android:gravity="clip_vertical|end" />
+            android:gravity="clip_vertical|end"
+            android:spinnerMode="dropdown"
+            android:drawSelectorOnTop="true" />
     </LinearLayout>
     <Switch
         android:id="@+id/preferences_auto_delete_updates"
