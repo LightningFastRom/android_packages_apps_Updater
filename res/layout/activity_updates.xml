@@ -39,7 +39,7 @@
             android:showDividers="middle"
             layout_below="@+id/app_bar">
             
-            <Switch
+            <org.lineageos.updater.ui.HapticSwitch
                 android:id="@+id/auto_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +90,8 @@
                 android:layout_below="@+id/update_message"
                 android:text="@string/menu_preferences"
                 android:visibility="gone"
-                style="@style/Widget.AppCompat.Button.Colored"/>
+                android:theme="@style/buttonStyle"
+                style="@style/buttonStyle" />
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
