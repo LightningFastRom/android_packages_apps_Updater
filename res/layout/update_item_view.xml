@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
+    android:background="@drawable/sheet_background"
     android:foreground="?attr/selectableItemBackground"
-    android:nextFocusRight="@+id/update_action"
-    app:cardCornerRadius="0dp"
+    app:cardCornerRadius="10dp"
     app:contentPadding="16dp">
 
     <LinearLayout
@@ -30,7 +30,7 @@
                 android:alpha="0.87"
                 android:drawablePadding="8dp"
                 android:maxLines="1"
-                android:paddingBottom="8sp"
+                android:paddingBottom="4sp"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp"
                 tools:text="LineageOS 15.1" />
@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp"
                 tools:text="29 February 2018" />
 
@@ -53,7 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="4sp"
-                    android:visibility="invisible"
+                    android:paddingBottom="4sp"
+                    android:progressDrawable="@drawable/progress_background"
                     tools:progress="65"
                     tools:visibility="visible" />
 
@@ -62,6 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/progress_bar"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:ellipsize="marquee"
                     android:singleLine="true"
                     android:visibility="invisible"
@@ -70,21 +73,24 @@
 
                 <TextView
                     android:id="@+id/build_size"
+                    android:layout_below="@id/progress_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="8sp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:paddingTop="4sp"
                     android:singleLine="true"
                     tools:text="300 MB"
                     tools:visibility="invisible" />
             </RelativeLayout>
-        </LinearLayout>
 
-        <Button
-            android:id="@id/update_action"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            <org.lineageos.updater.ui.HapticButton
+                android:id="@+id/update_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
+                android:theme="@style/buttonStyle"
+                style="@style/buttonStyle"
             tools:text="Pause" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
