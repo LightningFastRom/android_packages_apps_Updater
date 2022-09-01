@@ -33,7 +33,7 @@
             android:textColor="@color/inverted"
             android:textSize="16sp" />
 
-        <Spinner
+        <org.lineageos.updater.ui.HapticSpinner
             android:id="@+id/preferences_auto_updates_check_interval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
