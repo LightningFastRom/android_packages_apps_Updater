@@ -85,12 +85,13 @@
 
             <org.lineageos.updater.ui.HapticButton
                 android:id="@+id/update_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_alignParentRight="true"
                 android:theme="@style/buttonStyle"
                 style="@style/buttonStyle"
-            tools:text="Pause" />
+                tools:text="Pause" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
