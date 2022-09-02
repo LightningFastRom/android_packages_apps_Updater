@@ -51,7 +51,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="top|center"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:id="@+id/all_up_to_date_view"
@@ -99,8 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="16dp"
+            android:clipToPadding="false"
+            android:layout_margin="8dp"
             android:scrollbars="vertical"
             android:visibility="gone" />
 
