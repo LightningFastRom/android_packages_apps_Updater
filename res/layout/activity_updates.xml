@@ -32,7 +32,6 @@
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
             android:paddingTop="16dp"
-            android:background="@drawable/au_background"
             android:orientation="vertical">
 
             <org.lineageos.updater.ui.HapticSwitch
@@ -101,7 +100,6 @@
             android:layout_gravity="top|center"
             android:layout_centerHorizontal="true"
             android:clipToPadding="false"
-            android:layout_margin="8dp"
             android:scrollbars="vertical"
             android:visibility="gone" />
 

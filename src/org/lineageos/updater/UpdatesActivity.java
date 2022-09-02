@@ -53,6 +53,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -111,6 +113,7 @@ public class UpdatesActivity extends UpdatesListActivity {
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -187,7 +190,6 @@ public class UpdatesActivity extends UpdatesListActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        finish();
     }
 
     @Override

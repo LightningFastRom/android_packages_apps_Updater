@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/update_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
-    android:background="@drawable/sheet_background"
     android:foreground="?attr/selectableItemBackground"
     android:nextFocusRight="@+id/update_action"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="10dp"
-    app:contentPadding="16dp">
+    app:cardCornerRadius="0dp"
+    app:contentPadding="16dp"
+    app:cardBackgroundColor="@color/row">
 
     <LinearLayout
         android:layout_width="match_parent"
