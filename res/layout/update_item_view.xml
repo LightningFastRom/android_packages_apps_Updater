@@ -82,9 +82,9 @@
                     tools:visibility="gone" />
             </RelativeLayout>
 
-            <org.lineageos.updater.ui.HapticButton
+            <org.lineageos.updater.ui.HapticImageButton
                 android:id="@+id/update_action"
-                android:layout_width="wrap_content"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:layout_gravity="right|center"

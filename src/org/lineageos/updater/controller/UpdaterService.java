@@ -268,7 +268,7 @@ public class UpdaterService extends Service {
                 String text = getString(R.string.download_starting_notification);
                 mNotificationStyle.bigText(text);
                 mNotificationBuilder.setStyle(mNotificationStyle);
-                mNotificationBuilder.setSmallIcon(android.R.drawable.stat_sys_download);
+                mNotificationBuilder.setSmallIcon(R.drawable.ic_download);
                 mNotificationBuilder.setTicker(text);
                 mNotificationBuilder.setOngoing(true);
                 mNotificationBuilder.setAutoCancel(false);
@@ -280,7 +280,7 @@ public class UpdaterService extends Service {
                 String text = getString(R.string.downloading_notification);
                 mNotificationStyle.bigText(text);
                 mNotificationBuilder.setStyle(mNotificationStyle);
-                mNotificationBuilder.setSmallIcon(android.R.drawable.stat_sys_download);
+                mNotificationBuilder.setSmallIcon(R.drawable.ic_download);
                 mNotificationBuilder.addAction(android.R.drawable.ic_media_pause,
                         getString(R.string.pause_button),
                         getPausePendingIntent(update.getDownloadId()));
@@ -318,7 +318,7 @@ public class UpdaterService extends Service {
                 String text = getString(R.string.download_paused_error_notification);
                 mNotificationStyle.bigText(text);
                 mNotificationBuilder.setStyle(mNotificationStyle);
-                mNotificationBuilder.setSmallIcon(android.R.drawable.stat_sys_warning);
+                mNotificationBuilder.setSmallIcon(R.drawable.ic_warning);
                 mNotificationBuilder.addAction(android.R.drawable.ic_media_play,
                         getString(R.string.resume_button),
                         getResumePendingIntent(update.getDownloadId()));
@@ -358,7 +358,7 @@ public class UpdaterService extends Service {
             case VERIFICATION_FAILED: {
                 stopForeground(STOP_FOREGROUND_DETACH);
                 mNotificationBuilder.setStyle(null);
-                mNotificationBuilder.setSmallIcon(android.R.drawable.stat_sys_warning);
+                mNotificationBuilder.setSmallIcon(R.drawable.ic_warning);
                 mNotificationBuilder.setProgress(0, 0, false);
                 String text = getString(R.string.verification_failed_notification);
                 mNotificationBuilder.setContentText(text);
@@ -419,7 +419,7 @@ public class UpdaterService extends Service {
             case INSTALLATION_FAILED: {
                 stopForeground(STOP_FOREGROUND_DETACH);
                 mNotificationBuilder.setStyle(null);
-                mNotificationBuilder.setSmallIcon(android.R.drawable.stat_sys_warning);
+                mNotificationBuilder.setSmallIcon(R.drawable.ic_warning);
                 mNotificationBuilder.setProgress(0, 0, false);
                 String text = getString(R.string.installing_update_error);
                 mNotificationBuilder.setContentText(text);

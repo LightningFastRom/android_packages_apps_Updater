@@ -33,7 +33,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -56,6 +56,7 @@ import org.lineageos.updater.misc.StringGenerator;
 import org.lineageos.updater.misc.Utils;
 import org.lineageos.updater.model.UpdateInfo;
 import org.lineageos.updater.model.UpdateStatus;
+import org.lineageos.updater.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,6 +81,8 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
     private AlertDialog infoDialog;
 
+    private Context mContext;
+
     private enum Action {
         DOWNLOAD,
         PAUSE,
@@ -92,7 +95,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private Button mAction;
+        private ImageButton mAction;
 
         private TextView mBuildDate;
         private TextView mBuildVersion;
@@ -103,7 +106,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
         public ViewHolder(final View view) {
             super(view);
-            mAction = (Button) view.findViewById(R.id.update_action);
+            mAction = (ImageButton) view.findViewById(R.id.update_action);
 
             mBuildDate = (TextView) view.findViewById(R.id.build_date);
             mBuildVersion = (TextView) view.findViewById(R.id.build_version);
@@ -124,6 +127,8 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        mContext = viewGroup.getContext();
+
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.update_item_view, viewGroup, false);
         return new ViewHolder(view);
@@ -242,7 +247,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
         if (update == null) {
             // The update was deleted
             viewHolder.mAction.setEnabled(false);
-            viewHolder.mAction.setText(R.string.action_download);
+//            viewHolder.mAction.setText(R.string.action_download);
             return;
         }
 
@@ -334,23 +339,26 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
                 .show();
     }
 
-    private void setButtonAction(Button button, Action action, final String downloadId,
+    private void setButtonAction(ImageButton button, Action action, final String downloadId,
             boolean enabled) {
         final View.OnClickListener clickListener;
         switch (action) {
             case DOWNLOAD:
-                button.setText(R.string.action_download);
+                button.setContentDescription(mContext.getResources().getString(R.string.action_download));
+                button.setImageResource(R.drawable.ic_download);
                 button.setEnabled(enabled);
                 clickListener = enabled ? view -> startDownloadWithWarning(downloadId) : null;
                 break;
             case PAUSE:
-                button.setText(R.string.action_pause);
+                button.setContentDescription(mContext.getResources().getString(R.string.action_pause));
+                button.setImageResource(R.drawable.ic_pause);
                 button.setEnabled(enabled);
                 clickListener = enabled ? view -> mUpdaterController.pauseDownload(downloadId)
                         : null;
                 break;
             case RESUME: {
-                button.setText(R.string.action_resume);
+                button.setContentDescription(mContext.getResources().getString(R.string.action_resume));
+                button.setImageResource(R.drawable.ic_resume);
                 button.setEnabled(enabled);
                 UpdateInfo update = mUpdaterController.getUpdate(downloadId);
                 final boolean canInstall = Utils.canInstall(update) ||
@@ -366,7 +374,8 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
             }
             break;
             case INSTALL: {
-                button.setText(R.string.action_install);
+                button.setContentDescription(mContext.getResources().getString(R.string.action_install));
+                button.setImageResource(R.drawable.ic_install);
                 button.setEnabled(enabled);
                 UpdateInfo update = mUpdaterController.getUpdate(downloadId);
                 final boolean canInstall = Utils.canInstall(update);
@@ -381,25 +390,29 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
             }
             break;
             case INFO: {
-                button.setText(R.string.action_info);
+                button.setContentDescription(mContext.getResources().getString(R.string.action_info));
+                button.setImageResource(android.R.drawable.ic_info);
                 button.setEnabled(enabled);
                 clickListener = enabled ? view -> showInfoDialog() : null;
             }
             break;
             case DELETE: {
-                button.setText(R.string.action_delete);
+                button.setContentDescription(mContext.getResources().getString(R.string.action_delete));
+                button.setImageResource(R.drawable.ic_delete);
                 button.setEnabled(enabled);
                 clickListener = enabled ? view -> getDeleteDialog(downloadId).show() : null;
             }
             break;
             case CANCEL_INSTALLATION: {
-                button.setText(R.string.action_cancel);
+                button.setContentDescription(mContext.getResources().getString(R.string.action_cancel));
+                button.setImageResource(R.drawable.ic_close);
                 button.setEnabled(enabled);
                 clickListener = enabled ? view -> getCancelInstallationDialog().show() : null;
             }
             break;
             case REBOOT: {
-                button.setText(R.string.reboot);
+                button.setContentDescription(mContext.getResources().getString(R.string.reboot));
+                button.setImageResource(R.drawable.ic_reboot);
                 button.setEnabled(enabled);
                 clickListener = enabled ? view -> {
                     PowerManager pm =
