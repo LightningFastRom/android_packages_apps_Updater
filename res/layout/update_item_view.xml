@@ -14,13 +14,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -57,7 +55,7 @@
                     android:paddingBottom="4sp"
                     android:progressDrawable="@drawable/progress_background"
                     tools:progress="65"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
 
                 <TextView
                     android:id="@+id/progress_text"
@@ -69,7 +67,7 @@
                     android:singleLine="true"
                     android:visibility="invisible"
                     tools:text="162 of 300 MB (3 minutes left) • 65%"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
 
                 <TextView
                     android:id="@+id/build_size"
@@ -80,7 +78,7 @@
                     android:paddingTop="4sp"
                     android:singleLine="true"
                     tools:text="300 MB"
-                    tools:visibility="invisible" />
+                    tools:visibility="gone" />
             </RelativeLayout>
 
             <org.lineageos.updater.ui.HapticButton
@@ -88,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:layout_gravity="right|center"
                 android:layout_alignParentRight="true"
                 android:theme="@style/buttonStyle"
                 style="@style/buttonStyle"
