@@ -5,7 +5,7 @@
         android:id="@+id/menu_preferences"
         android:icon="@drawable/ic_settings"
         android:title="@string/menu_preferences"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_show_changelog"
         android:icon="@drawable/ic_change_log"
