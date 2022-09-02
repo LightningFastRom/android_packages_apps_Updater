@@ -3,11 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_export_update"
+        android:icon="@drawable/ic_export"
         android:title="@string/menu_export_update" />
     <item
         android:id="@+id/menu_delete_action"
+        android:icon="@drawable/ic_delete"
         android:title="@string/menu_delete_update" />
     <item
         android:id="@+id/menu_copy_url"
+        android:icon="@drawable/ic_copy"
         android:title="@string/menu_copy_url" />
 </menu>
