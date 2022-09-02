@@ -8,6 +8,7 @@
     android:focusable="true"
     android:background="@drawable/sheet_background"
     android:foreground="?attr/selectableItemBackground"
+    android:nextFocusRight="@+id/update_action"
     android:layout_margin="8dp"
     app:cardCornerRadius="10dp"
     app:contentPadding="16dp">
@@ -81,16 +82,15 @@
                     tools:text="300 MB"
                     tools:visibility="gone" />
             </RelativeLayout>
-
-            <org.lineageos.updater.ui.HapticImageButton
-                android:id="@+id/update_action"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_gravity="right|center"
-                android:theme="@style/buttonStyle"
-                style="@style/buttonStyle"
-            tools:text="Pause" />
         </LinearLayout>
     </LinearLayout>
+    <org.lineageos.updater.ui.HapticImageButton
+        android:id="@+id/update_action"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_gravity="right|center"
+        android:theme="@style/buttonStyle"
+        style="@style/buttonStyle"
+    tools:text="Pause" />
 </androidx.cardview.widget.CardView>
