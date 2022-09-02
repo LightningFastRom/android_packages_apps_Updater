@@ -250,7 +250,7 @@ public class UpdatesActivity extends UpdatesListActivity {
                 IBinder service) {
             UpdaterService.LocalBinder binder = (UpdaterService.LocalBinder) service;
             mUpdaterService = binder.getService();
-//            mAdapter.setUpdaterController(mUpdaterService.getUpdaterController());
+            mAdapter.setUpdaterController(mUpdaterService.getUpdaterController());
             getUpdatesList();
         }
 
