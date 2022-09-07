@@ -8,89 +8,100 @@
     android:layout_height="wrap_content"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:nextFocusRight="@+id/update_action"
     app:cardCornerRadius="0dp"
     app:contentPadding="16dp"
     app:cardBackgroundColor="@color/row">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/update_action" >
 
-            <TextView
-                android:id="@+id/build_version"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:alpha="0.87"
-                android:drawablePadding="8dp"
-                android:maxLines="1"
-                android:paddingBottom="4sp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"
-                tools:text="LineageOS 15.1" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/build_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp"
-                tools:text="29 February 2018" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/build_version"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="4sp"
+                    android:alpha="0.87"
+                    android:drawablePadding="8dp"
+                    android:maxLines="1"
                     android:paddingBottom="4sp"
-                    android:progressDrawable="@drawable/progress_background"
-                    tools:progress="65"
-                    tools:visibility="gone" />
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp"
+                    tools:text="LineageOS 15.1" />
 
                 <TextView
-                    android:id="@+id/progress_text"
+                    android:id="@+id/build_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/progress_bar"
+                    android:maxLines="1"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:ellipsize="marquee"
-                    android:singleLine="true"
-                    android:visibility="invisible"
-                    tools:text="162 of 300 MB (3 minutes left) • 65%"
-                    tools:visibility="gone" />
+                    android:textSize="14sp"
+                    tools:text="29 February 2018" />
 
-                <TextView
-                    android:id="@+id/build_size"
-                    android:layout_below="@id/progress_text"
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:paddingTop="4sp"
-                    android:singleLine="true"
-                    tools:text="300 MB"
-                    tools:visibility="gone" />
-            </RelativeLayout>
+                    android:layout_height="wrap_content">
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:paddingTop="4sp"
+                        android:paddingBottom="4sp"
+                        android:progressDrawable="@drawable/progress_background"
+                        tools:progress="65"
+                        tools:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/progress_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/progress_bar"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:visibility="invisible"
+                        tools:text="162 of 300 MB (3 minutes left) • 65%"
+                        tools:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/build_size"
+                        android:layout_below="@id/progress_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:paddingTop="4sp"
+                        android:singleLine="true"
+                        tools:text="300 MB"
+                        tools:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <org.lineageos.updater.ui.HapticImageButton
-        android:id="@+id/update_action"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:layout_gravity="right|center"
-        android:theme="@style/buttonStyle"
-        style="@style/buttonStyle"
-    tools:text="Pause" />
+
+        <org.lineageos.updater.ui.HapticImageButton
+            android:id="@+id/update_action"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:theme="@style/buttonStyle"
+            style="@style/buttonStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Pause"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
