@@ -163,7 +163,7 @@ public class UpdatesActivity extends UpdatesListActivity {
           }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         
 
-        if (mIsTV){
+        if (mIsTV) {
             Button prefButton = (Button) findViewById(R.id.preferences);
             prefButton.setVisibility(View.VISIBLE);
             prefButton.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +171,10 @@ public class UpdatesActivity extends UpdatesListActivity {
                 public void onClick(View v) {
                     showPreferencesDialog();
                 }
+            });
+
+            findViewById(R.id.refresh).setOnClickListener(v -> {
+                downloadUpdatesList(true);
             });
         }
 
@@ -433,9 +437,16 @@ public class UpdatesActivity extends UpdatesListActivity {
     private void refreshAnimationStart() {
         findViewById(R.id.all_up_to_date_view).setVisibility(View.GONE);
         findViewById(R.id.recycler_view).setVisibility(View.GONE);
+        if (mIsTV) {
+            findViewById(R.id.refresh_progress).setVisibility(View.VISIBLE);
+        }
     }
 
     private void refreshAnimationStop() {
+        if (mIsTV) {
+            findViewById(R.id.refresh_progress).setVisibility(View.GONE);
+        }
+
         if (mAdapter.getItemCount() > 0) {
             findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
         } else {
