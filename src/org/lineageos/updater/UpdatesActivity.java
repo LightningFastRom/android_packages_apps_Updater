@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Handler;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -108,6 +109,14 @@ public class UpdatesActivity extends UpdatesListActivity {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         pullToRefresh = findViewById(R.id.updates_swipe_container);
+
+        if (Color.luminance(getApplication().getApplicationContext().getColor(R.color.theme_accent)) < 0.5) {
+            pullToRefresh.setColorSchemeColors(Color.WHITE);
+        } else {
+            pullToRefresh.setColorSchemeColors(Color.BLACK);
+        }
+
+        pullToRefresh.setProgressBackgroundColorSchemeResource(R.color.theme_accent);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new UpdatesListAdapter(this);
@@ -194,7 +203,7 @@ public class UpdatesActivity extends UpdatesListActivity {
         
         mHandler = new Handler();
     }
-    
+
     @Override
     public void onDestroy(){
         super.onDestroy();
