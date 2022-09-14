@@ -89,19 +89,6 @@
                     android:text="@string/is_up_to_date"
                     android:textSize="28sp"
                     android:textColor="?android:textColorSecondary" />
-
-                <org.lineageos.updater.ui.HapticButton
-                    android:id="@+id/preferences"
-                    android:drawableLeft="@drawable/ic_settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:layout_below="@+id/update_message"
-                    android:text="@string/menu_preferences"
-                    android:visibility="gone"
-                    android:theme="@style/buttonStyle"
-                    style="@style/buttonStyle" />
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -113,7 +100,6 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical"
                 android:visibility="gone" />
-
         </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
