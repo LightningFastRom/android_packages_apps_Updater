@@ -94,8 +94,8 @@
                 android:layout_below="@+id/update_message"
                 android:text="@string/menu_preferences"
                 android:visibility="gone"
-                android:theme="@style/buttonStyle"
-                style="@style/buttonStyle" />
+                android:theme="@style/buttonStyleColored"
+                style="@style/buttonStyleColored" />
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView

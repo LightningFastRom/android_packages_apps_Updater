@@ -37,7 +37,7 @@
         <item name="android:background">@drawable/sheet_background</item>
     </style>
 
-    <style name="buttonStyle" parent="@style/Widget.AppCompat.Button">
+    <style name="buttonStyleColoreless" parent="@style/Widget.AppCompat.Button">
         <item name="android:stateListAnimator">@null</item>
         <item name="colorAccent">@color/theme_accent</item>
         <item name="android:textColor">@color/inverted</item>
@@ -45,7 +45,7 @@
         <item name="backgroundTint">@null</item>
     </style>
 
-    <style name="buttonStyle2" parent="@style/Widget.AppCompat.Button.Colored">
+    <style name="buttonStyleColored" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:stateListAnimator">@null</item>
         <item name="colorAccent">@color/theme_accent</item>
         <item name="android:textColor">@color/inverted</item>
@@ -54,8 +54,8 @@
     </style>
 
     <style name="AccentMaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
-        <item name="buttonBarNegativeButtonStyle">@style/buttonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/buttonStyle2</item>
+        <item name="buttonBarPositiveButtonStyle">@style/buttonStyleColoreless</item>
+        <item name="buttonBarNegativeButtonStyle">@style/buttonStyleColored</item>
     </style>
 
     <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
