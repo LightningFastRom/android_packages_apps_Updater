@@ -43,15 +43,16 @@
     </style>
 
     <style name="NegativeButtonStyle" parent="@style/Widget.AppCompat.Button">
-        <item name="colorAccent">@color/theme_accent</item>
-        <item name="android:textColor">@color/theme_accent</item>
-        <item name="backgroundTint">@color/inverted</item>
-        <item name="android:layout_marginBottom">1dp</item>
+        <item name="colorAccent">@color/negative_button_color</item>
+        <item name="android:textColor">@color/inverted</item>
+        <item name="android:background">@color/negative_button_color</item>
+        <item name="backgroundTint">@color/negative_button_color</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="@style/Widget.AppCompat.Button">
         <item name="colorAccent">@color/theme_accent</item>
         <item name="android:textColor">@color/inverted</item>
+        <item name="android:background">@color/theme_accent</item>
         <item name="backgroundTint">@color/theme_accent</item>
         <item name="android:layout_marginStart">10dp</item>
     </style>
