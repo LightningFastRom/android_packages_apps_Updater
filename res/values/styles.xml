@@ -30,32 +30,37 @@
     </style>
 
     <style name="AppTheme.PopupMenuOverlapAnchor">
-        <item name="android:stateListAnimator">@null</item>
         <item name="android:overlapAnchor">true</item>
         <item name="android:dropDownVerticalOffset">8dp</item>
         <item name="android:dropDownHorizontalOffset">-16dp</item>
-        <item name="android:background">@drawable/sheet_background</item>
+        <item name="android:background">@color/theme_primary</item>
     </style>
-
-    <style name="buttonStyleColoreless" parent="@style/Widget.AppCompat.Button">
-        <item name="android:stateListAnimator">@null</item>
+    
+    <style name="NormalButtonStyle" parent="@style/Widget.AppCompat.Button">
         <item name="colorAccent">@color/theme_accent</item>
         <item name="android:textColor">@color/inverted</item>
-        <item name="background">@drawable/round_button</item>
-        <item name="backgroundTint">@null</item>
+        <item name="android:colorButtonNormal">@color/theme_accent</item>
     </style>
 
-    <style name="buttonStyleColored" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:stateListAnimator">@null</item>
+    <style name="NegativeButtonStyle" parent="@style/Widget.AppCompat.Button">
+        <item name="colorAccent">@color/theme_accent</item>
+        <item name="android:textColor">@color/theme_accent</item>
+        <item name="backgroundTint">@color/inverted</item>
+        <item name="android:layout_marginBottom">1dp</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="@style/Widget.AppCompat.Button">
         <item name="colorAccent">@color/theme_accent</item>
         <item name="android:textColor">@color/inverted</item>
-        <item name="background">@drawable/round_button</item>
-        <item name="backgroundTint">@null</item>
+        <item name="backgroundTint">@color/theme_accent</item>
+        <item name="android:layout_marginStart">10dp</item>
     </style>
 
     <style name="AccentMaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
-        <item name="buttonBarPositiveButtonStyle">@style/buttonStyleColoreless</item>
-        <item name="buttonBarNegativeButtonStyle">@style/buttonStyleColored</item>
+        <item name="android:headerDividersEnabled">true</item>
+        <item name="android:background">@color/theme_primary</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
     </style>
 
     <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
