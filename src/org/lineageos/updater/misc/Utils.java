@@ -90,6 +90,7 @@ public class Utils {
         update.setType(object.getString("romtype"));
         update.setFileSize(object.getLong("size"));
         update.setDownloadUrl(object.getString("url"));
+        update.setChangeLog(object.getString("changelog"));
         update.setVersion(object.getString("version"));
         return update;
     }
@@ -161,21 +162,7 @@ public class Utils {
             serverUrl = context.getString(R.string.updater_server_url);
         }
 
-        return serverUrl.replace("{device}", device)
-                .replace("{type}", type)
-                .replace("{incr}", incrementalVersion);
-    }
-
-    public static String getUpgradeBlockedURL(Context context) {
-        String device = SystemProperties.get(Constants.PROP_NEXT_DEVICE,
-                SystemProperties.get(Constants.PROP_DEVICE));
-        return context.getString(R.string.blocked_update_info_url, device);
-    }
-
-    public static String getChangelogURL(Context context) {
-        String device = SystemProperties.get(Constants.PROP_NEXT_DEVICE,
-                SystemProperties.get(Constants.PROP_DEVICE));
-        return context.getString(R.string.menu_changelog_url, device);
+        return serverUrl.replace("{device}", device);
     }
 
     public static void triggerUpdate(Context context, String downloadId) {
