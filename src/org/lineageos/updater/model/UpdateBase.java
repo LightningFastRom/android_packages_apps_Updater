@@ -20,7 +20,6 @@ public class UpdateBase implements UpdateBaseInfo {
     private String mName;
     private String mDownloadUrl;
     private String mDownloadId;
-    private String mChangeLogUrl;
     private long mTimestamp;
     private String mType;
     private String mVersion;
@@ -33,7 +32,6 @@ public class UpdateBase implements UpdateBaseInfo {
         mName = update.getName();
         mDownloadUrl = update.getDownloadUrl();
         mDownloadId = update.getDownloadId();
-        mChangeLogUrl = update.getChangeLog();
         mTimestamp = update.getTimestamp();
         mType = update.getType();
         mVersion = update.getVersion();
@@ -101,14 +99,5 @@ public class UpdateBase implements UpdateBaseInfo {
 
     public void setFileSize(long fileSize) {
         mFileSize = fileSize;
-    }
-    
-    @Override
-    public String getChangeLog() {
-        return mChangeLogUrl;
-    }
-
-    public void setChangeLog(String changeLogUrl) {
-        mChangeLogUrl = changeLogUrl;
     }
 }

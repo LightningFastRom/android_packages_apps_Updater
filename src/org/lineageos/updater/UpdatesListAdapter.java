@@ -27,7 +27,6 @@ import android.text.SpannableString;
 import android.text.format.Formatter;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.net.Uri;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -81,8 +80,6 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
     private UpdatesListActivity mActivity;
 
     private AlertDialog infoDialog;
-    
-    private AlertDialog changeLogDialog;
 
     private Context mContext;
 
@@ -143,10 +140,6 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
         if (infoDialog != null) {
             infoDialog.dismiss();
-        }
-
-        if (changeLogDialog != null) {
-            changeLogDialog.dismiss();
         }
     }
 
@@ -254,6 +247,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
         if (update == null) {
             // The update was deleted
             viewHolder.mAction.setEnabled(false);
+//            viewHolder.mAction.setText(R.string.action_download);
             return;
         }
 
@@ -549,10 +543,6 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
                         exportUpdate(update);
                     }
                     return true;
-                case R.id.menu_show_changelog: {
-                    showChangelogDialog(update.getChangeLog());
-                    return true;
-                }
             }
             return false;
         });
@@ -572,7 +562,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
         intent.putExtra(ExportUpdateService.EXTRA_DEST_FILE, dest);
         mActivity.startService(intent);
     }
-    
+
     private void showInfoDialog() {
         if (infoDialog != null) {
             infoDialog.dismiss();
@@ -582,19 +572,8 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
                 .setPositiveButton(android.R.string.ok, null)
                 .setMessage(R.string.blocked_update_dialog_message_custom)
                 .show();
-        infoDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
-    
-    private void showChangelogDialog(String changeLog) {
-        if (changeLogDialog != null) {
-            changeLogDialog.dismiss();
-        }
-        changeLogDialog = new AlertDialog.Builder(mActivity, R.style.AccentMaterialAlertDialog)
-                .setTitle(R.string.changelog_dialog_title)
-                .setPositiveButton(android.R.string.ok, null)
-                .setMessage(changeLog)
-                .show();
-        changeLogDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        TextView textView = (TextView) infoDialog.findViewById(android.R.id.message);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private boolean isBatteryLevelOk() {
