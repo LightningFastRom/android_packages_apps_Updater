@@ -96,7 +96,6 @@
             android:id="@+id/update_action"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:theme="@style/NormalButtonStyle"
             style="@style/NormalButtonStyle"
             app:layout_constraintTop_toTopOf="parent"

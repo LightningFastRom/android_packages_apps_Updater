@@ -157,20 +157,7 @@ public class UpdatesActivity extends UpdatesListActivity {
         TextView headerTitle = (TextView) findViewById(R.id.header_title);
         headerTitle.setText(getString(R.string.header_title_text,
                 BuildInfoUtils.getBuildVersion()));
-        
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground( final Void ... params ) {
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute( final Void result ) {
-                downloadUpdatesList(true);
-                pullToRefresh.setRefreshing(true);
-            }
-          }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-        
 
         if (mIsTV) {
             Button prefButton = (Button) findViewById(R.id.preferences);
@@ -222,6 +209,19 @@ public class UpdatesActivity extends UpdatesListActivity {
         intentFilter.addAction(UpdaterController.ACTION_INSTALL_PROGRESS);
         intentFilter.addAction(UpdaterController.ACTION_UPDATE_REMOVED);
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, intentFilter);
+        
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground( final Void ... params ) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute( final Void result ) {
+                downloadUpdatesList(true);
+                pullToRefresh.setRefreshing(true);
+            }
+          }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
 
     @Override
