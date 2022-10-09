@@ -45,7 +45,6 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.browser.customtabs.CustomTabsIntent;
 
 import com.google.android.material.snackbar.Snackbar;
 
