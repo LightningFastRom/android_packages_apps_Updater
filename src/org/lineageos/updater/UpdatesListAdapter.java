@@ -198,8 +198,6 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
             viewHolder.mProgressBar.setProgress(update.getProgress());
         }
 
-        viewHolder.itemView.setOnLongClickListener(getLongClickListener(update, canDelete,
-                viewHolder.mBuildDate));
         viewHolder.mProgressBar.setVisibility(View.VISIBLE);
         viewHolder.mProgressText.setVisibility(View.VISIBLE);
         viewHolder.mBuildSize.setVisibility(View.GONE);
@@ -208,21 +206,13 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
     private void handleNotActiveStatus(ViewHolder viewHolder, UpdateInfo update) {
         final String downloadId = update.getDownloadId();
         if (mUpdaterController.isWaitingForReboot(downloadId)) {
-            viewHolder.itemView.setOnLongClickListener(
-                    getLongClickListener(update, false, viewHolder.mBuildDate));
             setButtonAction(viewHolder.mAction, Action.REBOOT, downloadId, true);
         } else if (update.getPersistentStatus() == UpdateStatus.Persistent.VERIFIED) {
-            viewHolder.itemView.setOnLongClickListener(
-                    getLongClickListener(update, true, viewHolder.mBuildDate));
             setButtonAction(viewHolder.mAction, Action.DELETE,
                     downloadId, !isBusy());
         } else if (!Utils.canInstall(update)) {
-            viewHolder.itemView.setOnLongClickListener(
-                    getLongClickListener(update, false, viewHolder.mBuildDate));
             setButtonAction(viewHolder.mAction, Action.INFO, downloadId, !isBusy());
         } else {
-            viewHolder.itemView.setOnLongClickListener(
-                    getLongClickListener(update, false, viewHolder.mBuildDate));
             setButtonAction(viewHolder.mAction, Action.DOWNLOAD, downloadId, !isBusy());
         }
         String fileSize = Formatter.formatShortFileSize(mActivity, update.getFileSize());
@@ -448,14 +438,6 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
                 .setNegativeButton(android.R.string.cancel, null);
     }
 
-    private View.OnLongClickListener getLongClickListener(final UpdateInfo update,
-            final boolean canDelete, View anchor) {
-        return view -> {
-            startActionMode(update, canDelete, anchor);
-            return true;
-        };
-    }
-
     private AlertDialog.Builder getInstallDialog(final String downloadId) {
         if (!isBatteryLevelOk()) {
             Resources resources = mActivity.getResources();
@@ -503,49 +485,6 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
                             mActivity.startService(intent);
                         })
                 .setNegativeButton(android.R.string.cancel, null);
-    }
-
-    private void startActionMode(final UpdateInfo update, final boolean canDelete, View anchor) {
-        mSelectedDownload = update.getDownloadId();
-        notifyItemChanged(update.getDownloadId());
-
-        ContextThemeWrapper wrapper = new ContextThemeWrapper(mActivity,
-                R.style.AppTheme_PopupMenuOverlapAnchor);
-        PopupMenu popupMenu = new PopupMenu(wrapper, anchor, Gravity.NO_GRAVITY,
-                R.attr.actionOverflowMenuStyle, 0);
-        popupMenu.inflate(R.menu.menu_action_mode);
-
-        MenuBuilder menu = (MenuBuilder) popupMenu.getMenu();
-        menu.findItem(R.id.menu_delete_action).setVisible(canDelete);
-        menu.findItem(R.id.menu_copy_url).setVisible(update.getAvailableOnline());
-        menu.findItem(R.id.menu_export_update).setVisible(
-                update.getPersistentStatus() == UpdateStatus.Persistent.VERIFIED);
-
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_delete_action:
-                    getDeleteDialog(update.getDownloadId()).show();
-                    return true;
-                case R.id.menu_copy_url:
-                    Utils.addToClipboard(mActivity,
-                            mActivity.getString(R.string.label_download_url),
-                            update.getDownloadUrl(),
-                            mActivity.getString(R.string.toast_download_url_copied));
-                    return true;
-                case R.id.menu_export_update:
-                    // TODO: start exporting once the permission has been granted
-                    boolean hasPermission = PermissionsUtils.checkAndRequestStoragePermission(
-                            mActivity, 0);
-                    if (hasPermission) {
-                        exportUpdate(update);
-                    }
-                    return true;
-            }
-            return false;
-        });
-
-        MenuPopupHelper helper = new MenuPopupHelper(wrapper, menu, anchor);
-        helper.show();
     }
 
     private void exportUpdate(UpdateInfo update) {
