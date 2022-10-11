@@ -247,7 +247,6 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
         if (update == null) {
             // The update was deleted
             viewHolder.mAction.setEnabled(false);
-//            viewHolder.mAction.setText(R.string.action_download);
             return;
         }
 
