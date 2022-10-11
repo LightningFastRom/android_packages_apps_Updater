@@ -70,6 +70,7 @@ import org.lineageos.updater.download.DownloadClient;
 import org.lineageos.updater.misc.BuildInfoUtils;
 import org.lineageos.updater.misc.Constants;
 import org.lineageos.updater.misc.StringGenerator;
+import org.lineageos.updater.misc.PermissionsUtils;
 import org.lineageos.updater.misc.Utils;
 import org.lineageos.updater.model.UpdateInfo;
 import org.lineageos.updater.ui.PreferenceSheet;
@@ -129,20 +130,25 @@ public class UpdatesActivity extends UpdatesListActivity {
         }
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
+        boolean hasPermission = PermissionsUtils.checkAndRequestStoragePermission(
+                this, 0);
+
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (UpdaterController.ACTION_UPDATE_STATUS.equals(intent.getAction())) {
-                    String downloadId = intent.getStringExtra(UpdaterController.EXTRA_DOWNLOAD_ID);
-                    handleDownloadStatusChange(downloadId);
-                    mAdapter.notifyDataSetChanged();
-                } else if (UpdaterController.ACTION_DOWNLOAD_PROGRESS.equals(intent.getAction()) ||
-                        UpdaterController.ACTION_INSTALL_PROGRESS.equals(intent.getAction())) {
-                    String downloadId = intent.getStringExtra(UpdaterController.EXTRA_DOWNLOAD_ID);
-                    mAdapter.notifyItemChanged(downloadId);
-                } else if (UpdaterController.ACTION_UPDATE_REMOVED.equals(intent.getAction())) {
-                    String downloadId = intent.getStringExtra(UpdaterController.EXTRA_DOWNLOAD_ID);
-                    mAdapter.removeItem(downloadId);
+                if (hasPermission) {
+                    if (UpdaterController.ACTION_UPDATE_STATUS.equals(intent.getAction())) {
+                        String downloadId = intent.getStringExtra(UpdaterController.EXTRA_DOWNLOAD_ID);
+                        handleDownloadStatusChange(downloadId);
+                        mAdapter.notifyDataSetChanged();
+                    } else if (UpdaterController.ACTION_DOWNLOAD_PROGRESS.equals(intent.getAction()) ||
+                            UpdaterController.ACTION_INSTALL_PROGRESS.equals(intent.getAction())) {
+                        String downloadId = intent.getStringExtra(UpdaterController.EXTRA_DOWNLOAD_ID);
+                        mAdapter.notifyItemChanged(downloadId);
+                    } else if (UpdaterController.ACTION_UPDATE_REMOVED.equals(intent.getAction())) {
+                        String downloadId = intent.getStringExtra(UpdaterController.EXTRA_DOWNLOAD_ID);
+                        mAdapter.removeItem(downloadId);
+                    }
                 }
             }
         };
